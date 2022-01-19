@@ -5,10 +5,11 @@ import (
 	"encoding/base64"
 	"net"
 	"strconv"
+	"strings"
 	"time"
 
-	"github.com/ruraomsk/TLServer/logger"
 	"github.com/ruraomsk/ag-server/comm"
+	"github.com/ruraomsk/ag-server/logger"
 	"github.com/ruraomsk/ag-server/pudge"
 )
 
@@ -22,7 +23,7 @@ func createDeviceToDevices(cross *pudge.Cross) *pudge.Controller {
 	return new(pudge.Controller)
 }
 func (d *deviceInfo) setTouts() {
-	d.toutRead = time.Second * 10
+	d.toutRead = time.Second * 500
 	d.toutWrite = time.Second * 10
 }
 func workerDevice(socket net.Conn) {
@@ -36,6 +37,7 @@ func workerDevice(socket net.Conn) {
 		logger.Error.Printf("Чтение номера от %s %s", socket.RemoteAddr(), err.Error())
 		return
 	}
+	number = strings.ReplaceAll(number, "\n", "")
 	uid, err := strconv.Atoi(number)
 	if err != nil {
 		logger.Error.Printf("Неверный номер от %s %s", socket.RemoteAddr(), err.Error())
@@ -48,6 +50,7 @@ func workerDevice(socket net.Conn) {
 		dev   deviceInfo
 	)
 	if cross, is = isDeviceIntoCross(uid); !is {
+		logger.Info.Printf("Устройство %d не подключено", uid)
 		writer.WriteString(messageNotFound)
 		writer.WriteString("\n")
 		_ = writer.Flush()
@@ -62,8 +65,8 @@ func workerDevice(socket net.Conn) {
 	dev, is = devs.devs[uid]
 	if is {
 		dev.socket.Close()
-		close(dev.readChan)
-		close(dev.writeChan)
+		// close(dev.readChan)
+		// close(dev.writeChan)
 	}
 	dev = deviceInfo{
 		socket:    socket,
@@ -79,6 +82,7 @@ func workerDevice(socket net.Conn) {
 	dev.generateKey(16)
 	dev.setTouts()
 	devs.devs[uid] = dev
+
 	writer.WriteString(base64.StdEncoding.EncodeToString(dev.key))
 	writer.WriteString("\n")
 

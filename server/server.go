@@ -6,8 +6,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ruraomsk/TLServer/logger"
 	"github.com/ruraomsk/ag-server/comm"
+	"github.com/ruraomsk/ag-server/logger"
 	"github.com/ruraomsk/ag-server/pudge"
 )
 
@@ -47,6 +47,7 @@ func listenConnect(port int) {
 			logger.Error.Printf("Ошибка accept %s", err.Error())
 
 		}
+		logger.Info.Printf("Подключаем %s", socket.RemoteAddr().String())
 		go workerDevice(socket)
 	}
 
