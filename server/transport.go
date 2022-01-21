@@ -11,7 +11,7 @@ import (
 
 func (d *deviceInfo) ReadMessage() {
 	defer d.socket.Close()
-	// defer close(d.readChan)
+	defer close(d.readChan)
 	reader := bufio.NewReader(d.socket)
 	for {
 		d.socket.SetReadDeadline(time.Now().Add(d.toutRead))
@@ -37,7 +37,7 @@ func (d *deviceInfo) ReadMessage() {
 }
 func (d *deviceInfo) WriteMessage() {
 	defer d.socket.Close()
-	// defer close(d.writeChan)
+	defer close(d.writeChan)
 	writer := bufio.NewWriter(d.socket)
 	for {
 		message, ok := <-d.writeChan

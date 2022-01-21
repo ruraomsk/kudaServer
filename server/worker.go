@@ -14,6 +14,9 @@ import (
 )
 
 func isDeviceIntoCross(uid int) (*pudge.Cross, bool) {
+	if uid == 0 {
+		return nil, false
+	}
 	return new(pudge.Cross), true
 }
 func isDeviceIntoDevices(uid int) (*pudge.Controller, bool) {
@@ -23,8 +26,10 @@ func createDeviceToDevices(cross *pudge.Cross) *pudge.Controller {
 	return new(pudge.Controller)
 }
 func (d *deviceInfo) setTouts() {
-	d.toutRead = time.Second * 500
+	d.ctrl.TMax = 400
+	d.toutRead = time.Second * time.Duration(d.ctrl.TMax+60)
 	d.toutWrite = time.Second * 10
+	d.ctrl.TimeOut = int64(d.toutRead)
 }
 func workerDevice(socket net.Conn) {
 	defer socket.Close()
@@ -44,8 +49,8 @@ func workerDevice(socket net.Conn) {
 		return
 	}
 	var (
-		cross *pudge.Cross
-		ctrl  *pudge.Controller
+		cross *pudge.Cross      = &pudge.Cross{}
+		ctrl  *pudge.Controller = &pudge.Controller{}
 		is    bool
 		dev   deviceInfo
 	)
@@ -81,6 +86,7 @@ func workerDevice(socket net.Conn) {
 	}
 	dev.generateKey(16)
 	dev.setTouts()
+	dev.ctrl.ID = dev.uid
 	devs.devs[uid] = dev
 
 	writer.WriteString(base64.StdEncoding.EncodeToString(dev.key))

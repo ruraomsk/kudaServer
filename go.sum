@@ -12,8 +12,8 @@ github.com/onsi/ginkgo v1.6.0/go.mod h1:lLunBs/Ym6LB5Z9jYTR76FiuTmxDTDusOGeTQH+W
 github.com/onsi/ginkgo v1.10.1/go.mod h1:lLunBs/Ym6LB5Z9jYTR76FiuTmxDTDusOGeTQH+WWjE=
 github.com/onsi/gomega v1.7.0/go.mod h1:ex+gbHU/CVuBBDIJjb2X0qEXbFg53c61hWP/1CpauHY=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
-github.com/ruraomsk/ag-server v0.0.0-20220119062958-f86b3cb2675f h1:pBteh1icFHkfG863SmdBnlVh9K5CZxDj3DmCWCJzKpY=
-github.com/ruraomsk/ag-server v0.0.0-20220119062958-f86b3cb2675f/go.mod h1:LwgZtJIoUqVT+qDhr8AqE7mTOD35m22P1LCETYvkMrw=
+github.com/ruraomsk/ag-server v0.0.0-20220119081131-cd8f42946e83 h1:z3wD+VEaq4zkFIYoqSDzSHyjjKFpjRGBOj217a45A7s=
+github.com/ruraomsk/ag-server v0.0.0-20220119081131-cd8f42946e83/go.mod h1:LwgZtJIoUqVT+qDhr8AqE7mTOD35m22P1LCETYvkMrw=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.4.0/go.mod h1:j7eGeouHqKxXV5pUuKE4zz7dFj8WfuZ+81PSLYec5m4=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
