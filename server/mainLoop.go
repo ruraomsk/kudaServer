@@ -53,6 +53,7 @@ func (d *deviceInfo) mainLoop() {
 	logger.Info.Printf("Начинаем обмен с %d", d.uid)
 	go d.ReadMessage()
 	go d.WriteMessage()
+	go d.sendCommandTest()
 	defer func() {
 		close(d.command)
 	}()
@@ -76,6 +77,11 @@ func (d *deviceInfo) mainLoop() {
 		case <-deviceNotWork.C:
 			logger.Error.Printf("Устройство %d не отвечает", d.uid)
 			return
+		case cmd := <-d.command:
+			m := newMessage()
+			body, _ := json.Marshal(cmd)
+			m.Messages["command"] = body
+			d.writeChan <- m
 		}
 	}
 }
