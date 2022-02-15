@@ -36,9 +36,14 @@ type BaseCtrl struct {
 	TMax    int64 `json:"tmax"` //Максимальное время ожидания ответа от сервера в секундах
 	TimeOut int64 `json:"tout"` //TimeOut на чтение от контроллера в секундах
 }
+type Dates struct {
+	Name string    `json:"name"`
+	Date time.Time `json:"date"`
+}
 
 var execute = map[string]interface{}{
 	"base":            BaseCtrl{},
+	"dates":           Dates{},
 	"traffic":         pudge.Traffic{},
 	"Status":          pudge.Status{},
 	"StatusCommandDU": pudge.StatusCommandDU{},
@@ -55,6 +60,7 @@ func (d *deviceInfo) mainLoop() {
 	go d.WriteMessage()
 	go d.sendCommandTest()
 	defer func() {
+		d.work = false
 		close(d.command)
 	}()
 	d.writeChan <- d.getMeStatus()
@@ -139,6 +145,11 @@ func (d *deviceInfo) updateDevice(m Message) (Message, bool) {
 			var v pudge.Input
 			json.Unmarshal(buffer, &v)
 			d.ctrl.Input = v
+		case "dates":
+			v := make([]Dates, 0)
+			json.Unmarshal(buffer, &v)
+			logger.Info.Printf("dates %v", v)
+			return Message{}, need
 		}
 	}
 	logger.Info.Printf("ctrl %v", d.ctrl)

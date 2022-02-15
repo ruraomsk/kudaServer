@@ -25,6 +25,7 @@ type deviceInfo struct {
 	ctrl      *pudge.Controller
 	cross     *pudge.Cross
 	command   chan comm.CommandARM
+	work      bool
 }
 
 var (

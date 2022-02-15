@@ -83,6 +83,7 @@ func workerDevice(socket net.Conn) {
 		ctrl:      ctrl,
 		cross:     cross,
 		command:   make(chan comm.CommandARM),
+		work:      true,
 	}
 	dev.generateKey(16)
 	dev.setTouts()
